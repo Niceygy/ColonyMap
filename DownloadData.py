@@ -12,8 +12,8 @@ from requests.adapters import HTTPAdapter
 TARGET_URLS: List[Tuple[str, str]] = [
     #TODO COMMENTED BECAUSE THEY ARE BIG AND LET'S BE RESPECTFUL :)
     #("https://downloads.spansh.co.uk/galaxy.json.gz", "galaxy.json"),
-    #("https://downloads.spansh.co.uk/galaxy_populated.json.gz", "galaxy_populated.json"),
-    #("https://downloads.spansh.co.uk/galaxy_1day.json.gz", "galaxy_1day.json") #TODO Only here because it's smaller probably not neeted
+    ("https://downloads.spansh.co.uk/galaxy_populated.json.gz", "galaxy_populated.json"),
+    # ("https://downloads.spansh.co.uk/galaxy_1day.json.gz", "galaxy_1day.json") #TODO Only here because it's smaller probably not neeted
 ]
 
 
@@ -91,7 +91,7 @@ def _extract_gzipped_file(temp_gz_path: Path, final_json_path: Path) -> None:
     print(f"Extracting to {final_json_path}...")
     try:
         with gzip.open(temp_gz_path, 'rb') as f_in, open(final_json_path, 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
+            shutil.copyfileobj(f_in, f_out, length=1024*1024)
 
         print(f"Extraction successful! Final file: {final_json_path.name}")
         os.remove(temp_gz_path)
