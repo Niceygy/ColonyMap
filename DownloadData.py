@@ -13,7 +13,7 @@ TARGET_URLS: List[Tuple[str, str]] = [
     #TODO COMMENTED BECAUSE THEY ARE BIG AND LET'S BE RESPECTFUL :)
     #("https://downloads.spansh.co.uk/galaxy.json.gz", "galaxy.json"),
     ("https://downloads.spansh.co.uk/galaxy_populated.json.gz", "galaxy_populated.json"),
-    # ("https://downloads.spansh.co.uk/galaxy_1day.json.gz", "galaxy_1day.json") #TODO Only here because it's smaller probably not neeted
+    # ("https://downloads.spansh.co.uk/galaxy_1day.json.gz", "galaxy_1day.json") #TODO Only here because it's smaller probably not needed
 ]
 
 
