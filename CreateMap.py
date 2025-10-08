@@ -6,6 +6,16 @@ from mpl_toolkits.mplot3d import Axes3D  # Add this import
 
 class ScatterPlotCreator:
     def process_to_array(file_name: str):
+        """
+        Processes the JSON to a numpy 
+        array that matplotlib can understand
+
+        Args:
+            file_name (str): JSON File name 
+
+        Returns:
+            array
+        """
         result = []
         
         with open(file_name, "r") as f:
@@ -34,6 +44,11 @@ class ScatterPlotCreator:
             return result
         
     def create_plot(array):
+        """Loads the array and creates a 3D scatter plot
+
+        Args:
+            array: from process_to_array
+        """
         print("\nCreating plot...")
         x = array[:, 0]
         y = array[:, 1]
