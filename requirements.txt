@@ -12,3 +12,4 @@ six==1.17.0
 requests==2.32.5
 pathlib==1.0.1
 typing==3.7.4.3
+ijson==3.4.0
