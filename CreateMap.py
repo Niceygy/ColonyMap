@@ -1,8 +1,8 @@
 import json
-import numpy
-import math
+import time
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # Add this import
+import numpy
+
 
 class ScatterPlotCreator:
     def process_to_array(file_name: str):
@@ -53,16 +53,22 @@ class ScatterPlotCreator:
         x = array[:, 0]
         y = array[:, 1]
         z = array[:, 2]
-        fig = plt.figure()
+        fig = plt.figure(figsize=(19.2, 10.8))
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter(x, y, z, s=1)
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
         ax.set_zlabel("Z")
         ax.set_title("System 3D scatter plot")
-        plt.show()
-            
+        # plt.show()
+        plt.savefig("System 3D scatter plot.png", dpi=100)
+        plt.close()
             
 if __name__ == "__main__":
+    start_time = time.time()
     array = ScatterPlotCreator.process_to_array("data/processed_galaxy_populated.json")
     ScatterPlotCreator.create_plot(array)
+    end_time = time.time()
+    elapsed_ms = (end_time - start_time) * 1000
+    print(f"Plotting took {elapsed_ms:.0f} ms.")
+
