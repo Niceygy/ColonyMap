@@ -18,3 +18,7 @@ urllib3==2.5.0
 PyQt5==5.15.11
 PyQt5-Qt5==5.15.17
 PyQt5_sip==12.17.1
+pandas==2.3.3
+PySide6==6.10.0
+PySide6_Addons==6.10.0
+PySide6_Essentials==6.10.0
