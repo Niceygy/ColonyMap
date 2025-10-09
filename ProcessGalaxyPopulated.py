@@ -1,5 +1,6 @@
 import json
 import sys
+import time
 from decimal import Decimal
 from pathlib import Path
 import ijson
@@ -96,9 +97,27 @@ class GalaxyPopulatedProcessor:
 
 
 if __name__ == "__main__":
-    input_path = Path("data/galaxy_populated.json")
-    output_path = Path("data/processed_galaxy_populated.json")
-    try:
-        GalaxyPopulatedProcessor.process_and_save(input_path, output_path)
-    except (FileNotFoundError, FileExistsError, IOError, RuntimeError) as e:
-        print(f"ERROR: {e}", file=sys.stderr)
+    input_galaxy_path = Path("data/galaxy.json")
+    input_galaxy_populated_path = Path("data/galaxy_populated.json")
+
+    output_galaxy_path = Path("data/processed_galaxy.json")
+    output_galaxy_populated_path = Path("data/processed_galaxy_populated.json")
+
+    files_to_process = [
+        (input_galaxy_populated_path, output_galaxy_populated_path),
+        (input_galaxy_path, output_galaxy_path)
+    ]
+
+    for input_path, output_path in files_to_process:
+        try:
+            print(f"--- Processing {input_path} ---")
+            start_time = time.time()
+            GalaxyPopulatedProcessor.process_and_save(input_path, output_path)
+            end_time = time.time()
+            elapsed_seconds = end_time - start_time
+            minutes, seconds = divmod(elapsed_seconds, 60)
+            print(f"Processing took {int(minutes)} minutes and {int(seconds)} seconds.\n")
+        except (FileNotFoundError, FileExistsError, IOError, RuntimeError) as e:
+            print(f"ERROR processing {input_path}: {e}\n", file=sys.stderr)
+
+    sys.exit(0)

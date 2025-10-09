@@ -25,3 +25,4 @@ shiboken6==6.10.0
 six==1.17.0
 tzdata==2025.2
 urllib3==2.5.0
+duckdb==1.4.1
