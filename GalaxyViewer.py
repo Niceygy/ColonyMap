@@ -59,7 +59,7 @@ class GalaxyViewer(QMainWindow):
         layout = QVBoxLayout(main_widget)
 
         # Matplotlib plot setup
-        self.fig, self.ax = plt.subplots()
+        self.fig, self.ax = plt.subplots(subplot_kw={'projection': '3d'})
         self.canvas = FigureCanvas(self.fig)
         self.toolbar = NavigationToolbar(self.canvas, self)
 
@@ -107,6 +107,7 @@ class GalaxyViewer(QMainWindow):
             # Extract coordinates into separate columns for performance
             df['x'] = df['coords'].apply(lambda c: c['x'])
             df['y'] = df['coords'].apply(lambda c: c['y'])
+            df['z'] = df['coords'].apply(lambda c: c['z'])
             self.data = df
             print(f"Successfully loaded {len(self.data)} systems.")
             self.update_plot(initial_load=True)
@@ -128,6 +129,7 @@ class GalaxyViewer(QMainWindow):
             self.ax.set_facecolor('#000000')
             self.ax.tick_params(axis='x', colors='white')
             self.ax.tick_params(axis='y', colors='white')
+            self.ax.tick_params(axis='z', colors='white')
             self.ax.spines['left'].set_color('white')
             self.ax.spines['right'].set_color('white')
             self.ax.spines['top'].set_color('white')
@@ -187,7 +189,7 @@ class GalaxyViewer(QMainWindow):
             display_data = view_data
 
         # Create new scatter plot (since axes were cleared)
-        self.scatter_plot = self.ax.scatter(display_data['x'], display_data['y'], s=1, c='white', alpha=0.2)
+        self.scatter_plot = self.ax.scatter(display_data['x'], display_data['y'], display_data['z'], s=1, c='white', alpha=0.2)
 
         # Restore limits, as scatter can change them
         self.ax.set_xlim(xlim)

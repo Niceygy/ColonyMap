@@ -1,11 +1,12 @@
 import json
+from pathlib import Path
 import time
 import matplotlib.pyplot as plt
 import numpy
 
 
 class ScatterPlotCreator:
-    def process_to_array(file_name: str):
+    def process_to_array(file_name: Path):
         """
         Processes the JSON to a numpy 
         array that matplotlib can understand
@@ -41,6 +42,7 @@ class ScatterPlotCreator:
             
             f.close()            
             result = numpy.array(result)
+            print("\nComplete")
             return result
         
     def create_plot(array):
@@ -66,7 +68,7 @@ class ScatterPlotCreator:
             
 if __name__ == "__main__":
     start_time = time.time()
-    array = ScatterPlotCreator.process_to_array("data/processed_galaxy_populated.json")
+    array = ScatterPlotCreator.process_to_array(Path("data/processed_galaxy_populated.json"))
     ScatterPlotCreator.create_plot(array)
     end_time = time.time()
     elapsed_ms = (end_time - start_time) * 1000
