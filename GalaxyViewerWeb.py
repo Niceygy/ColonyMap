@@ -2,11 +2,13 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt, mpld3
+from mpl_toolkits.mplot3d import Axes3D  # Add at the top with other imports
 
 class GalaxyWebViewer():
     def __init__(self):
-        self.data = None
-        
+        self.data = None   
+        self.load_data(Path("data/processed_galaxy_populated.json"))
+        self.display_data()     
         
     def load_data(self, file_path: Path):
         if not file_path.exists():
@@ -27,15 +29,20 @@ class GalaxyWebViewer():
             
             self.data = df
             print(f"Successfully loaded {len(self.data)} systems.")
-            self.update_plot(initial_load=True)
         except Exception as e:
             print(f"Error: Failed to load or process data: {e}")
             self.data = None
             
     def display_data(self):
         X = self.data['x']
-        Y =
-        Z = 
+        Y = self.data['y']
+        Z = self.data['z']
         
-        plt.plot()
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter(X, Y, Z, s=1, c=Z, cmap='rainbow', alpha=0.5)
         mpld3.show()
+        
+if __name__ == "__main__":
+        GalaxyWebViewer()
+        # GalaxyWebViewer.display_data()
