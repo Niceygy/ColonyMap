@@ -108,6 +108,11 @@ class GalaxyViewer(QMainWindow):
             df['x'] = df['coords'].apply(lambda c: c['x'])
             df['y'] = df['coords'].apply(lambda c: c['y'])
             df['z'] = df['coords'].apply(lambda c: c['z'])
+            df['population'] = df['population']
+            
+            # Filter out to systems within 10,000 LY of Sol
+            df = df[(df['x'] < 10*1000) & (df['y'] < 10*1000) & (df['z'] < 10*1000)]
+            
             self.data = df
             print(f"Successfully loaded {len(self.data)} systems.")
             self.update_plot(initial_load=True)
@@ -179,8 +184,9 @@ class GalaxyViewer(QMainWindow):
         # Filter data to the current view
         view_data = self.data[
             (self.data['x'] >= xlim[0]) & (self.data['x'] <= xlim[1]) &
-            (self.data['y'] >= ylim[0]) & (self.data['y'] <= ylim[1])
-            ]
+            (self.data['y'] >= ylim[0]) & (self.data['y'] <= ylim[1]) &
+            (self.data['z'] >= ylim[0]) & (self.data['z'] <= ylim[1])
+            ][['x', 'y', 'z', 'population']]
 
         # Sample the data if necessary
         if len(view_data) > num_points:
@@ -188,8 +194,23 @@ class GalaxyViewer(QMainWindow):
         else:
             display_data = view_data
 
+        # Ensure population is numeric (in case of any parsing issues)
+        display_data['population'] = pd.to_numeric(display_data['population'], errors='raise')
+
         # Create new scatter plot (since axes were cleared)
-        self.scatter_plot = self.ax.scatter(display_data['x'], display_data['y'], display_data['z'], s=1, c='white', alpha=0.2)
+        self.scatter_plot = self.ax.scatter(
+            #coordinates
+            display_data['x'],
+            display_data['y'],
+            display_data['z'],
+            #colour
+            s=1, 
+            c=display_data['population'],
+            vmax=display_data['population'].max(),
+            vmin=display_data['population'].min(),
+            cmap='viridis',
+            alpha=0.2
+            )
 
         # Restore limits, as scatter can change them
         self.ax.set_xlim(xlim)
