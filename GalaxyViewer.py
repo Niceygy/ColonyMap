@@ -1,7 +1,8 @@
 import sys
 from pathlib import Path
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt, mpld3
+import numpy as np  # Add at the top with other imports
 import pandas as pd
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
@@ -110,7 +111,7 @@ class GalaxyViewer(QMainWindow):
             df['z'] = df['coords'].apply(lambda c: c['z'])
             df['population'] = df['population']
             
-            # Filter out to systems within 10,000 LY of Sol
+            # Filter to systems within 10,000 LY of Sol
             df = df[(df['x'] < 10*1000) & (df['y'] < 10*1000) & (df['z'] < 10*1000)]
             
             self.data = df
@@ -196,6 +197,7 @@ class GalaxyViewer(QMainWindow):
 
         # Ensure population is numeric (in case of any parsing issues)
         display_data['population'] = pd.to_numeric(display_data['population'], errors='raise')
+        display_data['log_population'] = np.log10(display_data['population'] + 1)  # Avoid log(0)
 
         # Create new scatter plot (since axes were cleared)
         self.scatter_plot = self.ax.scatter(
@@ -205,10 +207,10 @@ class GalaxyViewer(QMainWindow):
             display_data['z'],
             #colour
             s=1, 
-            c=display_data['population'],
-            vmax=display_data['population'].max(),
-            vmin=display_data['population'].min(),
-            cmap='viridis',
+            c=display_data['log_population'],
+            vmax=display_data['log_population'].max(),
+            vmin=display_data['log_population'].min(),
+            cmap='rainbow',
             alpha=0.2
             )
 
